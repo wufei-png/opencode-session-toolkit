@@ -1,6 +1,6 @@
 # opencode-session-toolkit
 
-`opencode-session-toolkit` is a Codex skill for reading the local OpenCode SQLite database, querying sessions across directories, inspecting messages and schema details, and exporting matched sessions to Markdown files.
+`opencode-session-toolkit` is a skill for reading the local OpenCode SQLite database, querying sessions across directories, inspecting messages and schema details, and exporting matched sessions to Markdown files.
 
 ## What this skill does
 
