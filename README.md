@@ -5,12 +5,16 @@
 ## One-Line Install
 
 ```bash
+# English (default)
 curl -fsSL https://raw.githubusercontent.com/wufei-png/opencode-session-toolkit/main/install.sh | bash
+
+# 中文版本
+LANG_CHOICE=2 bash -c "$(curl -fsSL https://raw.githubusercontent.com/wufei-png/opencode-session-toolkit/main/install.sh)"
 ```
 
 This will:
-- Prompt you to choose English or 中文 version
-- Download all skill files to `~/.opencode/skills/opencode-session-toolkit/`
+- Download all skill files to `~/.agents/skills/opencode-session-toolkit/`
+- Create symlinks in `~/.claude/skills/` and `~/.cursor/skills/`
 
 ## What this skill does
 
