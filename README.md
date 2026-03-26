@@ -28,7 +28,7 @@ This will:
 
 ## Chinese version
 
-The Chinese version lives in [`cn-version/opencode-session-toolkit-cn`](./cn-version/opencode-session-toolkit-cn).
+The Chinese version lives in [`cn-version/opencode-session-toolkit-cn`](./opencode-session-toolkit-cn).
 
 ## ClawHub
 
