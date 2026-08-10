@@ -1,5 +1,8 @@
 # opencode-session-toolkit
 
+> [!IMPORTANT]
+> Active development of the English skill has moved to [`wufei-png/skills`](https://github.com/wufei-png/skills/tree/main/skills/productivity/opencode-session-toolkit). This repository is a frozen archive; its existing release and installation links remain available for historical compatibility.
+
 `opencode-session-toolkit` is a read-only Agent Skill for discovering, searching, inspecting, diagnosing, and exporting local OpenCode SQLite sessions.
 
 It ships English and Chinese runtime packages backed by one tested Python CLI.
