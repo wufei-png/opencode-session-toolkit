@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate tag and repository
+        run: |
+          test "${GITHUB_REF_NAME#v}" = "$(cat VERSION)"
+          python3 scripts/validate_repo.py
+          python3 -m unittest discover -s tests -v
+      - name: Build deterministic archives
+        run: python3 scripts/build_release.py --version "${GITHUB_REF_NAME#v}" --output-dir dist
+      - name: Authenticate ClawHub publisher
+        env:
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
+        run: |
+          test -n "$CLAWHUB_TOKEN"
+          npx -y clawhub@0.23.3 --no-input auth login --token "$CLAWHUB_TOKEN" --label github-actions
+          npx -y clawhub@0.23.3 --no-input auth whoami
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --verify-tag --generate-notes
+      - name: Publish matching ClawHub versions
+        env:
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          SOURCE_COMMIT="$(git rev-parse HEAD)"
+          npx -y clawhub@0.23.3 --no-input skill publish opencode-session-toolkit \
+            --slug opencode-session-toolkit \
+            --owner wufei-png \
+            --version "$VERSION" \
+            --tags latest \
+            --changelog "Release $GITHUB_REF_NAME" \
+            --source-repo wufei-png/opencode-session-toolkit \
+            --source-commit "$SOURCE_COMMIT" \
+            --source-ref "$GITHUB_REF_NAME" \
+            --source-path opencode-session-toolkit
+          npx -y clawhub@0.23.3 --no-input skill publish opencode-session-toolkit-cn \
+            --slug opencode-session-toolkit-cn \
+            --name "OpenCode Session Toolkit 中文" \
+            --owner wufei-png \
+            --version "$VERSION" \
+            --tags latest \
+            --changelog "Release $GITHUB_REF_NAME" \
+            --source-repo wufei-png/opencode-session-toolkit \
+            --source-commit "$SOURCE_COMMIT" \
+            --source-ref "$GITHUB_REF_NAME" \
+            --source-path opencode-session-toolkit-cn
